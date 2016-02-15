@@ -83,9 +83,6 @@ function AsyncHook() {
   for (const key of Object.keys(patchs)) {
     patchs[key].call(this);
   }
-
-  // setup async wrap
-  asyncWrap.setupHooks(this._hooks.init, this._hooks.pre, this._hooks.post, this._hooks.destroy);
 }
 module.exports = AsyncHook;
 
@@ -99,10 +96,8 @@ AsyncHook.prototype.removeHooks = function (hooks) {
 
 AsyncHook.prototype.enable = function () {
   this._state.enabled = true;
-  asyncWrap.enable();
 };
 
 AsyncHook.prototype.disable = function () {
   this._state.enabled = false;
-  asyncWrap.disable();
 };

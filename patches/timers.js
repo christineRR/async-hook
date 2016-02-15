@@ -1,3 +1,5 @@
+"use strict";
+
 const timers = window;
 
 function TimeoutWrap() {}
