@@ -1,26 +1,25 @@
 {
-  "name": "async-hook",
-  "description": "Inspect the life of handle objects in node",
-  "version": "1.0.0",
-  "author": "Andreas Madsen <amwebdk@gmail.com>",
+  "name": "async-hook-browser",
+  "description": "Inspect the context of async for browser",
+  "version": "0.0.1",
+  "author": "liuxin.rkl@alibaba-inc.com",
   "main": "./index.js",
   "scripts": {
     "test": "node ./test/runner.js && eslint ."
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/AndreasMadsen/async-hook.git"
+    "url": "git@github.com:christineRR/async-hook.git"
   },
   "keywords": [
     "async",
     "async hooks",
     "inspect",
-    "async wrap"
+    "async wrap",
+    "browser"
   ],
   "license": "MIT",
-  "dependencies": {
-    "stack-chain": "~1.3.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "async": "1.5.x",
     "cli-color": "1.1.x"

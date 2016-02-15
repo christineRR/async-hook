@@ -16,14 +16,4 @@ if (global._asyncHook) {
   }
 }
 
-const stackChain = require('stack-chain');
-
-// Remove callSites from this module. AsyncWrap doesn't have any callSites
-// and the hooks are expected to be completely transparent.
-stackChain.filter.attach(function (error, frames) {
-  return frames.filter(function (callSite) {
-    return callSite.getFileName().slice(0, __dirname.length) !== __dirname;
-  });
-});
-
 module.exports = global._asyncHook = new AsyncHook();

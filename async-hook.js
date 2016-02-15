@@ -1,15 +1,8 @@
-'use strict';
-
-const asyncWrap = process.binding('async_wrap');
-const TIMERWRAP = asyncWrap.Providers.TIMERWRAP;
-
 const patchs = {
-  'nextTick': require('./patches/next-tick.js'),
   'timers': require('./patches/timers.js')
 };
 
 const uidSymbol = Symbol('async-hook-uid');
-const ignoreUIDs = new Set();
 
 function State() {
   this.enabled = false;
@@ -22,14 +15,8 @@ function Hooks() {
   const postFns = this.postFns = [];
   const destroyFns = this.destroyFns = [];
 
-  this.init = function (provider, uid, parent) {
+  this.init = function (uid, parent) {
     this[uidSymbol] = uid;
-
-    // Ignore TIMERWRAP, since setTimeout etc. is monkey patched
-    if (provider === TIMERWRAP) {
-      ignoreUIDs.add(uid);
-      return;
-    }
 
     // send the parent uid, not the parent handle. The user map the handle
     // objects appropiatly if needed.
@@ -37,14 +24,12 @@ function Hooks() {
 
     // call hooks
     for (const hook of initFns) {
-      hook(uid, this, provider, parent);
+      hook(uid, this, parent);
     }
   };
 
   this.pre = function () {
     const uid = this[uidSymbol];
-    if (ignoreUIDs.has(uid)) return;
-
     // call hooks
     for (const hook of preFns) {
       hook(uid, this);
@@ -53,8 +38,6 @@ function Hooks() {
 
   this.post = function () {
     const uid = this[uidSymbol];
-    if (ignoreUIDs.has(uid)) return;
-
     // call hooks
     for (const hook of postFns) {
       hook(uid, this);
@@ -62,12 +45,6 @@ function Hooks() {
   };
 
   this.destroy = function (uid) {
-    // Cleanup the ignore list if this uid should be ignored
-    if (ignoreUIDs.has(uid)) {
-      ignoreUIDs.delete(uid);
-      return;
-    }
-
     // call hooks
     for (const hook of destroyFns) {
       hook(uid);
@@ -101,9 +78,6 @@ function AsyncHook() {
 
   // expose version for conflict detection
   this.version = require('./package.json').version;
-
-  // expose the Providers map
-  this.providers = asyncWrap.Providers;
 
   // apply patches
   for (const key of Object.keys(patchs)) {

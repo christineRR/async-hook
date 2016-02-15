@@ -1,27 +1,20 @@
-'use strict';
-
-const timers = require('timers');
+const timers = window;
 
 function TimeoutWrap() {}
 function IntervalWrap() {}
-function ImmediateWrap() {}
 
 const timeoutMap = new Map();
 const intervalMap = new Map();
-const ImmediateMap = new Map();
 
 module.exports = function patch() {
   patchTimer(this._hooks, this._state, 'setTimeout', 'clearTimeout', TimeoutWrap, timeoutMap, true);
   patchTimer(this._hooks, this._state, 'setInterval', 'clearInterval', IntervalWrap, intervalMap, false);
-  patchTimer(this._hooks, this._state, 'setImmediate', 'clearImmediate', ImmediateWrap, ImmediateMap, true);
 
-  global.setTimeout = timers.setTimeout;
-  global.setInterval = timers.setInterval;
-  global.setImmediate = timers.setImmediate;
+  // global.setTimeout = timers.setTimeout;
+  // global.setInterval = timers.setInterval;
 
-  global.clearTimeout = timers.clearTimeout;
-  global.clearInterval = timers.clearInterval;
-  global.clearImmediate = timers.clearImmediate;
+  // global.clearTimeout = timers.clearTimeout;
+  // global.clearInterval = timers.clearInterval;
 };
 
 function patchTimer(hooks, state, setFn, clearFn, Handle, timerMap, singleCall) {
@@ -40,7 +33,7 @@ function patchTimer(hooks, state, setFn, clearFn, Handle, timerMap, singleCall) 
     let timerId;
 
     // call the init hook
-    hooks.init.call(handle, 0, uid, null);
+    hooks.init.call(handle, uid, null);
 
     // overwrite callback
     args[0] = function () {
