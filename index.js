@@ -1,5 +1,3 @@
-'use strict';
-
 const AsyncHook = require('./async-hook.js');
 
 // If a another copy (same version or not) of stack-chain exists it will result
