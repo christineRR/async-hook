@@ -1,9 +1,8 @@
 {
   "name": "async-hook-browser",
   "description": "Inspect the context of async for browser",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "liuxin.rkl@alibaba-inc.com",
-  "main": "./index.js",
   "scripts": {
     "test": "node ./test/runner.js && eslint ."
   },
@@ -19,7 +18,6 @@
     "browser"
   ],
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
     "async": "1.5.x",
     "cli-color": "1.1.x"
