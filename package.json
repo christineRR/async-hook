@@ -4,7 +4,7 @@
   "version": "0.0.4",
   "author": "liuxin.rkl@alibaba-inc.com",
   "scripts": {
-    "test": "node ./test/runner.js && eslint ."
+    "test": "mocha -R TAP --require ./test/env.js ./test"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,9 @@
   ],
   "license": "MIT",
   "devDependencies": {
+    "mocha": "*",
+    "chai": "*",
+    "jsdom": "*",
     "async": "1.5.x",
     "cli-color": "1.1.x"
   },
